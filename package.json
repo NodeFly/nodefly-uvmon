@@ -1,0 +1,7 @@
+{
+  "name": "nodefly-uvmon",
+  "version": "0.0.1",
+  "author": "Andrew Martens <andrew@nodefly.com>",
+  "main": "index.js",
+  "files": "build/Release/nodefly-uvmon.node"
+}
