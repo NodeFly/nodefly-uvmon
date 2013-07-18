@@ -1,9 +1,10 @@
 {
-	"name": "uvmon",
- 	"version": "0.0.2",
+	"name": "nodefly-uvmon",
+ 	"version": "0.0.3",
  	"author": "Nodefly <support@nodefly.com>",
 	"homepage": "http://www.nodefly.com",
 	"main": "index.js",
+	"repository": "https://github.com/NodeFly/nodefly-uvmon",
 	"engines": {
 		"node": ">=0.10.0"
 	}
