@@ -1,7 +1,10 @@
 {
-  "name": "nodefly-uvmon",
-  "version": "0.0.1",
-  "author": "Andrew Martens <andrew@nodefly.com>",
-  "main": "index.js",
-  "files": "build/Release/nodefly-uvmon.node"
+	"name": "uvmon",
+ 	"version": "0.0.2",
+ 	"author": "Nodefly <support@nodefly.com>",
+	"homepage": "http://www.nodefly.com",
+	"main": "index.js",
+	"engines": {
+		"node": ">=0.10.0"
+	}
 }
