@@ -1,7 +1,11 @@
 {
-  "name": "nodefly-uvmon",
-  "version": "0.0.1",
-  "author": "Andrew Martens <andrew@nodefly.com>",
-  "description": "NodeFly libuv Inspector",
-  "main": "index.js"
+	"name": "nodefly-uvmon",
+ 	"version": "0.0.4",
+ 	"author": "Nodefly <support@nodefly.com>",
+	"homepage": "http://www.nodefly.com",
+	"main": "index.js",
+	"repository": "https://github.com/NodeFly/nodefly-uvmon",
+	"engines": {
+		"node": ">=0.10.0"
+	}
 }
