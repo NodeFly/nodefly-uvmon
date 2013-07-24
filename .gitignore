@@ -1,5 +1,5 @@
-# build directory (include that on /bin)
 build/
+example/
 
 # Compiled Object files
 *.slo
