@@ -16,10 +16,6 @@ typedef struct {
 mon_stats_t uv_run_stats;
 
 
-/* XXX - this would be really expensive on Windows */
-#define TIME_IN_MSEC()  uv_hrtime() / 1000000;
-
-
 /* 
  * This is the callback that we register to be called at the end of 
  * the uv_run() loop.
@@ -32,8 +28,16 @@ if (handle == NULL) {
     return;
   }
   uv_loop_t* loop = handle->loop;
-  
-  uint32_t now = TIME_IN_MSEC();
+
+#ifdef _WIN32
+  uv_loop_t tmp_loop;
+  memcpy(&tmp_loop, loop, sizeof(tmp_loop));
+  uv_update_time(&tmp_loop);
+  uint32_t now = tmp_loop.time;
+#else
+  uint32_t now = uv_hrtime() / 1000000;
+#endif
+
   uint32_t delta;
   
   /* shouldn't have to check for this, but I swear I saw it happen once */
