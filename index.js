@@ -9,19 +9,19 @@
 
 var module_name = "uvmon";
 var version_map = {
-	'v0.10.*': 'v0.10.12'
-	}
-	, platform = process.platform
-	, key
-	, lib_ver
-	;
+  'v0.10.*': 'v0.10.12'
+  }
+  , platform = process.platform
+  , key
+  , lib_ver
+  ;
 
 if (platform == 'solaris') platform = 'sunos';
 
 for (key in version_map) {
-	if (RegExp(key).test(process.version)) {
-		lib_ver = version_map[key];
-	}
+  if (RegExp(key).test(process.version)) {
+    lib_ver = version_map[key];
+  }
 }
 
 // if lib_ver stays undefined require will fail and we'll catch it
