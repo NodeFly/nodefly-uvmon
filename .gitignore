@@ -1,5 +1,6 @@
 build/
 example/
+builderror.log
 
 # Compiled Object files
 *.slo
