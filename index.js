@@ -1,11 +1,13 @@
-// Precompile nodefly-gcinfo module for multiple platforms, 
-// on both ia32 and x64 (where relevant) 
+// Precompile the profiler module for 4 platforms: Windows, Solaris/SunOS,
+// Linux, OSX on both 32 and 64 bit architectures where relevant
 //
-// lib_ver (example: 'v0.8.12') indicates the exact minor version (.12) (or is it micro?)
+// lib_ver (example: 'v0.10.12') indicates the version (.12)
 // that the library was compiled under.
 //
-// If we can't find the mapping we don't try a default compiled version like we used to
+// we first try a locally compiled version; failing that we'll look for a
+// precompiled version
 
+var module_name = "nodefly-uvmon";
 var version_map = {
 	'v0.10.*': 'v0.10.12'
 	}
@@ -25,12 +27,23 @@ for (key in version_map) {
 // if lib_ver stays undefined require will fail and we'll catch it
 // same behaviour when there's a new version of node and we haven't 
 // compiled for it yet
-var modpath = "./compiled/" + platform + "/" + process.arch + "/" + lib_ver + "/nodefly-uvmon";
+var modpath = "./compiled/" + platform + "/" + process.arch + "/" + lib_ver
+  + "/" + module_name;
+var buildpath = "./build/Release/" + module_name;
 
 try {
-	module.exports = require(modpath);
+  // try local build dir in case node-gyp was successful
+  module.exports = require(buildpath);
 }
 catch (err) {
-	module.exports = { getData: function(){} }
+  try {
+    module.exports = require(modpath);
+  }
+  catch (err) {
+    // stub out the API functions in case we were unable to load the native
+    // module, which will prevent it from blowing up
+    module.exports = { getData: function(){} }
+    console.log("unable to load native module " + module_name + " from " +
+      buildpath + " or " + modpath);
+  }
 }
-
