@@ -1,5 +1,6 @@
 # build directory (include that on /bin)
 build/
+builderror.log
 
 # Compiled Object files
 *.slo
