@@ -87,4 +87,4 @@ void init(Handle<Object> target) {
   NODE_SET_METHOD(target, "getData", getData);
 }
 
-NODE_MODULE(nodefly_uvmon, init);
+NODE_MODULE(uvmon, init);
