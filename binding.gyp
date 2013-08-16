@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "nodefly-uvmon",
+      "target_name": "uvmon",
       "sources": ["uvmon.cc"]
     }
   ]

@@ -7,7 +7,7 @@
 // we first try a locally compiled version; failing that we'll look for a
 // precompiled version
 
-var module_name = "nodefly-uvmon";
+var module_name = "uvmon";
 var version_map = {
 	'v0.10.*': 'v0.10.12'
 	}
@@ -43,7 +43,7 @@ catch (err) {
     // stub out the API functions in case we were unable to load the native
     // module, which will prevent it from blowing up
     module.exports = { getData: function(){} }
-    console.log("unable to load native module " + module_name + " from " +
-      buildpath + " or " + modpath);
+    console.log("Unable to load native module " + module_name
+      + "; some features may be unavailable without compiling it.");
   }
 }
