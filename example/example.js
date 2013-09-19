@@ -3,7 +3,7 @@
  * Module dependencies.
  */
 
-var uvmon = require('../build/Release/nodefly-uvmon');
+var uvmon = require('../build/Release/uvmon');
 var util = require('util');
 
 var express = require('express')
