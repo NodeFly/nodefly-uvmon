@@ -6,6 +6,7 @@
 using namespace v8;
 
 static uv_check_t check_handle;
+static uv_prepare_t prepare_handle;
 
 typedef struct {
   uint32_t count;
@@ -15,23 +16,53 @@ typedef struct {
 
 mon_stats_t uv_run_stats;
 
+uint32_t start_time;
+#ifdef _WIN32
+  uv_loop_t tmp_loop; /* to keep from reallocating all the time in function */
+#endif
 
-/* 
- * This is the callback that we register to be called at the end of 
- * the uv_run() loop.
+
+/*
+ * Start of the timing section, reset timers
  */
 static void check_cb(uv_check_t* handle, int status) {
-if (handle == NULL) {
+  // we don't actually need anything from the handle, just a starting point
+  // timing from check_cb to prepare_cb, not loop->time to check_cb
+
+  if (handle == NULL) {
     return;
   }
   if (handle->loop == NULL) {
     return;
   }
-  uv_loop_t* loop = handle->loop;
 
 #ifdef _WIN32
-  uv_loop_t tmp_loop;
-  memcpy(&tmp_loop, loop, sizeof(tmp_loop));
+  memcpy(&tmp_loop, handle->loop, sizeof(tmp_loop));
+  uv_update_time(&tmp_loop);
+  start_time = tmp_loop.time;
+#else
+  start_time = uv_hrtime() / 1000000;
+#endif
+}
+
+
+/* 
+ * This is the end of the timing point.
+ */
+static void prepare_cb(uv_prepare_t* handle, int status) {
+  if (handle == NULL) {
+    return;
+  }
+  if (handle->loop == NULL) {
+    return;
+  }
+  if (start_time == 0) {
+    // start_time wasn't initialized yet
+    return;
+  }
+
+#ifdef _WIN32
+  memcpy(&tmp_loop, handle->loop, sizeof(tmp_loop));
   uv_update_time(&tmp_loop);
   uint32_t now = tmp_loop.time;
 #else
@@ -41,10 +72,10 @@ if (handle == NULL) {
   uint32_t delta;
   
   /* shouldn't have to check for this, but I swear I saw it happen once */
-  if (now < loop->time) {
+  if (now < start_time) {
     delta = 0;
   } else {
-    delta = (now - loop->time);
+    delta = (now - start_time);
   }
   
   uv_run_stats.count++;
@@ -79,10 +110,16 @@ Handle<Value> getData(const Arguments& args) {
  */
 void init(Handle<Object> target) {
   memset(&uv_run_stats, 0, sizeof(uv_run_stats));
+#ifdef _WIN32
+  memset(&tmp_loop, 0, sizeof(tmp_loop));
+#endif
+  start_time = 0;
   
   /* set up uv_run callback */
   uv_check_init(uv_default_loop(), &check_handle);
   uv_check_start(&check_handle, check_cb);
+  uv_prepare_init(uv_default_loop(), &prepare_handle);
+  uv_prepare_start(&prepare_handle, prepare_cb);
   
   NODE_SET_METHOD(target, "getData", getData);
 }
