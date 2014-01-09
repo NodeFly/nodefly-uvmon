@@ -1,5 +1,5 @@
-# build directory (include that on /bin)
 build/
+node_modules/
 builderror.log
 
 # Compiled Object files
