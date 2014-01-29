@@ -95,6 +95,7 @@ void init(Handle<Object> target) {
   
   /* set up uv_run callback */
   uv_check_init(uv_default_loop(), &check_handle);
+  uv_unref(reinterpret_cast<uv_handle_t*>(&check_handle));
   uv_check_start(&check_handle, check_cb);
   
   NODE_SET_METHOD(target, "getData", getData);
