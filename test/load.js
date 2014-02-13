@@ -18,7 +18,7 @@ describe('Module loading from various locations', function() {
   function loadAndTest(path, callback) {
     var uvmon = require(path);
     uvmon.should.have.property('getData');
-    uvmon.getData.should.be.a('function');
+    uvmon.getData.should.be.type('function');
     var ret = uvmon.getData();
     ret.should.have.property('count');
     ret.should.have.property('sum_ms');
