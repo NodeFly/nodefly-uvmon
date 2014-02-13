@@ -1,19 +1,18 @@
 var should = require('should');
 var fs = require('fs');
+var path = require('path');
+var version = require('../version')();
 
 describe('Module loading from various locations', function() {
 
-  var module_name = 'uvmon';
-
   var base = process.cwd();
-  var buildPath = 'build/Release/' + module_name;
-  var compiledPath = 'compiled/' + process.platform + '/'
-    + process.arch + '/' + process.version + '/' + module_name;
-  var compiledFile = base + '/' + compiledPath + '.node';
-  var buildFile = base + '/' + buildPath + '.node';
-  var compiledModule = base + '/' + compiledPath;
-  var buildModule = base + '/' + buildPath;
-  var baseModule = base + '/index.js';
+  var buildPath = version.localBuild;
+  var compiledPath = version.bundledBuild;
+  var compiledFile = path.resolve(base, compiledPath + '.node');
+  var buildFile = path.resolve(base, buildPath + '.node');
+  var compiledModule = path.resolve(base, compiledPath);
+  var buildModule = path.resolve(base, buildPath);
+  var baseModule = path.resolve(base, 'index.js');
 
   function loadAndTest(path, callback) {
     var uvmon = require(path);
