@@ -5,7 +5,7 @@ var path = require('path');
 describe('bundled binary path', function() {
   it('maps v0.10.* to v0.10.12', function() {
     var versions = ['v0.10.0', 'v0.10.12', 'v0.10.20', 'v0.10.40-pre'];
-    versions.forEach(function(ver,i,a) {
+    versions.forEach(function(ver) {
       var proc = { version: ver, platform: 'test', arch: 'x64' };
       version(proc).bundledBuild.should.include('v0.10.12');
     });
