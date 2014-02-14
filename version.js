@@ -5,22 +5,23 @@ var name = 'uvmon';
 // and update to new ones when we use a different version on the same minor
 // release number.
 
-var version_map = {
-  'v0.10.*': 'v0.10.12'
+var versionMap = {
+  'v0.10.12': /v0\.10\..*/
 };
 
 function version(proc) {
   proc = proc || process;
 
   var platform = proc.platform;
-  var key;
-  var lib_ver = 'NOT_BUNDLED';
-
   if (platform == 'solaris') platform = 'sunos';
 
-  for (key in version_map) {
-    if (RegExp(key).test(proc.version)) {
-      lib_ver = version_map[key];
+  // intentionally defaults to a path that may not exist
+  var libVer = proc.version;
+
+  for (var bundledVersion in versionMap) {
+    if (versionMap[bundledVersion].test(proc.version)) {
+      libVer = bundledVersion;
+      break;
     }
   }
 
@@ -29,7 +30,7 @@ function version(proc) {
   return {
     name: name,
     localBuild: './build/Release/' + name,
-    bundledBuild: path.join('.', 'compiled', platform, proc.arch, lib_ver, name)
+    bundledBuild: path.join('.', 'compiled', platform, proc.arch, libVer, name)
   }
 }
 
